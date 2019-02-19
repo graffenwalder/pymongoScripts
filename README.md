@@ -15,5 +15,5 @@ If it doesn't exist yet, kcal.py creates a foodDB database
 * Add new product
 * Find product
 * Update name/kcal values
-* Sort by name/kcal
+* Sort by name/kcal values
 * Delete product
