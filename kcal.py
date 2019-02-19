@@ -16,13 +16,28 @@ mydb = myclient["foodDB"]
 mycol = mydb["fooditems"]
 
 
-def showCollections():
-    print(mydb.list_collection_names())
+def deleteOne():
+    name = input("Delete product: ")
+    myquery = {"name": name}
+    if mycol.find_one(myquery):
+        mycol.delete_one(myquery)
+        emptyLines(1)
+        print("Succesfully deleted: " + name)
+    else:
+        emptyLines(1)
+        print(name + " not found.")
     emptyLines()
 
 
-def showAll(mycol=mycol):
-    for x in mycol.find():
+def findOne():
+    name = input("Search product: ")
+    food = {"name": name}
+    x = mycol.find_one(food)
+    if x == None:
+        emptyLines(1)
+        print(name + " not found")
+    else:
+        emptyLines(1)
         print(x)
     emptyLines()
 
@@ -51,6 +66,17 @@ def querySomething():
     emptyLines()
 
 
+def showAll(mycol=mycol):
+    for x in mycol.find():
+        print(x)
+    emptyLines()
+
+
+def showCollections():
+    print(mydb.list_collection_names())
+    emptyLines()
+
+
 def sortByName():
     mydoc = mycol.find().sort("name")
     for x in mydoc:
@@ -59,22 +85,9 @@ def sortByName():
 
 
 def sortByKcal():
-    mydoc = mycol.find().sort("kcal", -1)  # , -1 after name = reverse
+    mydoc = mycol.find().sort("kcal", -1)  # , -1  = reverse sort
     for x in mydoc:
         print(x)
-    emptyLines()
-
-
-def deleteOne():
-    name = input("Delete product: ")
-    myquery = {"name": name}
-    if mycol.find_one(myquery):
-        mycol.delete_one(myquery)
-        emptyLines(1)
-        print("Succesfully deleted: " + name)
-    else:
-        emptyLines(1)
-        print(name + " not found.")
     emptyLines()
 
 
@@ -114,18 +127,6 @@ def updateName():
     emptyLines()
 
 
-def findOne():
-    name = input("Search product: ")
-    food = {"name": name}
-    x = mycol.find_one(food)
-    if x == None:
-        emptyLines(1)
-        print(name + " not found")
-    else:
-        emptyLines(1)
-        print(x)
-    emptyLines()
-
 # Non MongoDB
 
 
@@ -155,7 +156,6 @@ def main():
 
         printMenu()
 
-    # New while loop, else it would run previous option with valueError
         while True:
             try:
                 userChoice = int(input("Please make a choice: "))
